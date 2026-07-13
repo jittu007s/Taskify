@@ -25,3 +25,7 @@
   "__v": 0
 }
 # Refresh React app to see newly created Tasks
+
+# Angel One algo trading bot
+-> A standalone Python SMA-crossover Nifty options bot for Angel One (SmartAPI) lives in ./algo-trading
+-> See algo-trading/README.md for the strategy spec, setup, and steps to enable algo/API trading on Angel One
