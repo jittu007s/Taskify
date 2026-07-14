@@ -32,9 +32,13 @@ RISK_REWARD = 2.0
 
 # Which strategy the live bot runs: "SMMA_CROSS" (the original rules) or
 # "ORB" (Opening Range Breakout). backtest_today.py always compares both.
-STRATEGY = "SMMA_CROSS"
+STRATEGY = "ORB"
 OR_MINUTES = 15            # ORB: opening range = first N minutes of the session
 ORB_MAX_RISK_POINTS = 60   # ORB: skip the trade if the range (= risk) is wider
+ORB_EXTENDED_TARGET_R = 3.0   # after 2R the target extends to this R multiple
+ORB_TIMEOUT_MINUTES = 15      # after the 2R shift: exit at prev candle high/low if neither hits
+ORB_BE_AFTER_MINUTES = 30     # in profit but no 2R for this long -> SL to entry
+ORB_RETRACE_POINTS = 15       # retest mode: minimum retracement before the retest entry
 ORB_CANDLE_INTERVAL = "FIVE_MINUTE"  # ORB runs on 5-min candles (others use CANDLE_INTERVAL)
 
 # --- Execution / safety --------------------------------------------------
