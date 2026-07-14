@@ -21,25 +21,26 @@ STRIKE_STEP = 50
 # revised periodically by the exchange (75 as of 2025). find_atm_option()
 # will use the lot size from the live instrument master when available and
 # fall back to this constant only if that field is missing.
-LOT_SIZE = 75
+LOT_SIZE = 65
 
 # --- Strategy parameters -----------------------------------------------
 # Angel One candle interval enum: ONE_MINUTE, THREE_MINUTE, FIVE_MINUTE,
 # TEN_MINUTE, FIFTEEN_MINUTE, THIRTY_MINUTE, ONE_HOUR, ONE_DAY
 CANDLE_INTERVAL = "THREE_MINUTE"
-SMA_PERIOD = 20   # period of the SMMA (smoothed MA, TradingView "SMMA 20 close")
-RISK_REWARD = 2.0
+SMA_PERIOD = 18   # period of the SMMA (smoothed MA, TradingView "SMMA 20 close")
+RISK_REWARD = 2.5
 
 # Which strategy the live bot runs: "SMMA_CROSS" (the original rules) or
 # "ORB" (Opening Range Breakout). backtest_today.py always compares both.
 STRATEGY = "ORB"
-OR_MINUTES = 15            # ORB: opening range = first N minutes of the session
+OR_MINUTES = 3             # ORB: opening range = first N minutes of the session
 ORB_MAX_RISK_POINTS = 60   # ORB: skip the trade if the range (= risk) is wider
 ORB_EXTENDED_TARGET_R = 3.0   # after 2R the target extends to this R multiple
 ORB_TIMEOUT_MINUTES = 15      # after the 2R shift: exit at prev candle high/low if neither hits
 ORB_BE_AFTER_MINUTES = 30     # in profit but no 2R for this long -> SL to entry
 ORB_RETRACE_POINTS = 15       # retest mode: minimum retracement before the retest entry
-ORB_CANDLE_INTERVAL = "FIVE_MINUTE"  # ORB runs on 5-min candles (others use CANDLE_INTERVAL)
+ORB_STOP_MODE = "mid_range"   # initial-entry stop: "mid_range" (user experiment) | "opposite"
+ORB_CANDLE_INTERVAL = "THREE_MINUTE"  # candle timeframe ORB runs on
 
 # --- Execution / safety --------------------------------------------------
 PRODUCT_TYPE = "INTRADAY"

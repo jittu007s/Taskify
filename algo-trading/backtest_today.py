@@ -42,7 +42,8 @@ STRATEGIES = {
         extended_target_r=config.ORB_EXTENDED_TARGET_R,
         timeout_minutes=config.ORB_TIMEOUT_MINUTES,
         be_after_minutes=config.ORB_BE_AFTER_MINUTES,
-        retrace_points=config.ORB_RETRACE_POINTS),
+        retrace_points=config.ORB_RETRACE_POINTS,
+        stop_mode=config.ORB_STOP_MODE),
         config.ORB_CANDLE_INTERVAL),
     "REGIME": (lambda: RegimeAdaptiveStrategy(), config.CANDLE_INTERVAL),
 }

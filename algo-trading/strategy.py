@@ -59,6 +59,7 @@ class Signal(Enum):
 class ExitReason(Enum):
     STOP_LOSS = "stop_loss"
     BE_STOP = "be_stop"
+    TARGET_HIT = "target_hit"
     TARGET_3R = "target_3r"
     TIMEOUT_EXIT = "timeout_prev_extreme"
     TRAILING_STOP = "trailing_stop"
@@ -320,7 +321,8 @@ class OpeningRangeBreakout:
     def __init__(self, sma_period: int = 20, risk_reward: float = 2.0,
                  or_minutes: int = 15, max_risk_points: float = 60.0,
                  extended_target_r: float = 3.0, timeout_minutes: int = 15,
-                 be_after_minutes: int = 30, retrace_points: float = 15.0):
+                 be_after_minutes: int = 30, retrace_points: float = 15.0,
+                 stop_mode: str = "opposite"):
         # sma_period retained for constructor compatibility (unused)
         self.risk_reward = risk_reward
         self.or_minutes = or_minutes
@@ -329,6 +331,7 @@ class OpeningRangeBreakout:
         self.timeout_minutes = timeout_minutes
         self.be_after_minutes = be_after_minutes
         self.retrace_points = retrace_points
+        self.stop_mode = stop_mode
 
         self._session = None
         self._prev = None
@@ -420,16 +423,13 @@ class OpeningRangeBreakout:
             return self._machine_step(c, note)
 
         rng = self._or_high - self._or_low
+        mid = self._or_low + rng / 2
         if c.close > self._or_high and not self._long_done:
-            if rng <= self.max_risk_points:
-                return self._enter("LONG", c.close, self._or_low, c, note)
-            note = (note + " | " if note else "") + \
-                f"LONG breakout at {c.close:.1f} skipped (range {rng:.1f} > cap)"
-        elif c.close < self._or_low and not self._short_done:
-            if rng <= self.max_risk_points:
-                return self._enter("SHORT", c.close, self._or_high, c, note)
-            note = (note + " | " if note else "") + \
-                f"SHORT breakout at {c.close:.1f} skipped (range {rng:.1f} > cap)"
+            sl = mid if self.stop_mode == "mid_range" else self._or_low
+            return self._enter("LONG", c.close, sl, c, note)
+        if c.close < self._or_low and not self._short_done:
+            sl = mid if self.stop_mode == "mid_range" else self._or_high
+            return self._enter("SHORT", c.close, sl, c, note)
         return StrategyEvent(Signal.NONE, c.close, note=note)
 
     def _machine_step(self, c: Candle, note):

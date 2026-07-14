@@ -29,7 +29,8 @@ def build_strategy():
             extended_target_r=config.ORB_EXTENDED_TARGET_R,
             timeout_minutes=config.ORB_TIMEOUT_MINUTES,
             be_after_minutes=config.ORB_BE_AFTER_MINUTES,
-            retrace_points=config.ORB_RETRACE_POINTS)
+            retrace_points=config.ORB_RETRACE_POINTS,
+            stop_mode=config.ORB_STOP_MODE)
     if config.STRATEGY == "REGIME":
         return RegimeAdaptiveStrategy()
     return SmaCrossOptionStrategy(sma_period=config.SMA_PERIOD, risk_reward=config.RISK_REWARD)
